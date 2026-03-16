@@ -294,6 +294,56 @@ input[type=number]::-webkit-inner-spin-button { color-scheme: dark; }
   padding: 0;
 }
 
+/* --- Collapsible Sections --- */
+.collapsible-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  cursor: pointer;
+  padding: 0.4em 0.2em;
+  border-radius: 4px;
+  user-select: none;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.collapsible-header:hover {
+  background-color: var(--ts-background-tertiary);
+}
+
+.collapsible-header .chevron {
+  font-size: 0.7em;
+  transition: transform 0.2s ease-in-out;
+  color: var(--ts-color-secondary);
+}
+
+.collapsible-header .chevron.collapsed {
+  transform: rotate(-90deg);
+}
+
+.collapsible-header .section-title {
+  font-size: 0.95em;
+  font-weight: bold;
+  color: var(--ts-accent-primary);
+}
+
+.collapsible-header .section-count {
+  font-size: 0.75em;
+  color: var(--ts-color-secondary);
+  margin-left: auto;
+}
+
+.collapsible-body {
+  overflow: hidden;
+  transition: max-height 0.25s ease-in-out, opacity 0.2s ease-in-out;
+  max-height: 5000px;
+  opacity: 1;
+}
+
+.collapsible-body.collapsed {
+  max-height: 0;
+  opacity: 0;
+}
+
 /* --- Abilities --- */
 .ability-list {
   display: flex;
@@ -316,11 +366,25 @@ input[type=number]::-webkit-inner-spin-button { color-scheme: dark; }
   cursor: pointer;
   width: 1.2em;
   height: 1.2em;
+  flex-shrink: 0;
 }
 
 .ability-tag.owned {
   background-color: var(--ts-accent-background);
   color: var(--ts-color-primary);
+}
+
+.ability-tag.custom {
+  border-left: 3px solid var(--ts-accent-primary);
+}
+
+.ability-tag.group-suite {
+  border-left: 3px solid #ffd700;
+}
+
+.ability-tag .ability-text {
+  flex: 1;
+  min-width: 0;
 }
 
 .ability-name {
@@ -329,9 +393,85 @@ input[type=number]::-webkit-inner-spin-button { color-scheme: dark; }
   font-size: 0.9em;
 }
 
+.ability-name .custom-badge {
+  font-size: 0.7em;
+  font-weight: normal;
+  color: var(--ts-accent-primary);
+  margin-left: 0.3em;
+}
+
+.ability-name .suite-badge {
+  font-size: 0.7em;
+  font-weight: normal;
+  color: #ffd700;
+  margin-left: 0.3em;
+}
+
 .ability-effect {
   font-size: 0.8em;
   color: var(--ts-color-secondary);
+}
+
+.ability-remove-btn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--ts-color-secondary);
+  cursor: pointer;
+  font-size: 1em;
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  transition: all 0.15s ease-in-out;
+  line-height: 1;
+}
+
+.ability-remove-btn:hover {
+  color: #ff4444;
+  background-color: rgba(255, 68, 68, 0.15);
+}
+
+/* --- Custom Ability Form --- */
+.custom-ability-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+  margin-top: 0.5em;
+  padding: 0.5em;
+  background-color: var(--ts-background-tertiary);
+  border-radius: 4px;
+  border: 1px dashed var(--ts-accessibility-border);
+}
+
+.custom-ability-form .form-row-inline {
+  display: flex;
+  gap: 0.3em;
+  align-items: center;
+}
+
+.custom-ability-form input[type="text"] {
+  flex: 1;
+  padding: 0.3em 0.4em;
+  font-size: 0.85em;
+}
+
+.custom-ability-form .add-btn {
+  padding: 0.3em 0.8em;
+  font-size: 0.85em;
+  white-space: nowrap;
+}
+
+.my-abilities-empty {
+  font-size: 0.8em;
+  color: var(--ts-color-secondary);
+  font-style: italic;
+  padding: 0.4em 0;
+}
+
+/* --- Abilities Section Divider --- */
+.abilities-divider {
+  height: 1px;
+  background-color: var(--ts-accessibility-border);
+  margin: 0.5em 0;
 }
 
 /* --- Search --- */

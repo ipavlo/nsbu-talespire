@@ -18,6 +18,8 @@ function defaultState() {
     injuryLevel: 0,
     turboTokens: 0,
     abilities: [],
+    customAbilities: [],
+    groupSuiteAbilities: [],
     autoBlowUp: true,
     notes: ""
   };
@@ -162,7 +164,58 @@ function buildSheetUI() {
 
   // --- Abilities ---
   var abilityCard = createCard("Abilities");
-  abilityCard.querySelector("h2").innerHTML = '<i class="ts-icon-star ts-icon-small"></i> Abilities (check to own)';
+  abilityCard.querySelector("h2").innerHTML = '<i class="ts-icon-star ts-icon-small"></i> Abilities';
+
+  // -- My Abilities (collapsible, expanded by default) --
+  var myHeader = document.createElement("div");
+  myHeader.className = "collapsible-header";
+  myHeader.innerHTML =
+    '<span class="chevron">&#9660;</span>' +
+    '<span class="section-title">My Abilities</span>' +
+    '<span class="section-count" id="my-abilities-count"></span>';
+  abilityCard.appendChild(myHeader);
+
+  var myBody = document.createElement("div");
+  myBody.className = "collapsible-body";
+  myBody.id = "my-abilities-body";
+
+  var myList = document.createElement("div");
+  myList.className = "ability-list";
+  myList.id = "my-abilities-list";
+  myBody.appendChild(myList);
+
+  // Custom ability form
+  var customForm = document.createElement("div");
+  customForm.className = "custom-ability-form";
+  customForm.innerHTML =
+    '<div class="form-row-inline">' +
+    '<input type="text" id="custom-ability-name" placeholder="Ability name">' +
+    '<button class="add-btn" id="custom-ability-add" title="Add custom ability">+ Add</button>' +
+    '</div>' +
+    '<input type="text" id="custom-ability-effect" placeholder="Effect description">';
+  myBody.appendChild(customForm);
+  abilityCard.appendChild(myBody);
+
+  setupCollapsible(myHeader, myBody, false);
+
+  // -- Divider --
+  var divider = document.createElement("div");
+  divider.className = "abilities-divider";
+  abilityCard.appendChild(divider);
+
+  // -- All Abilities (collapsible, collapsed by default) --
+  var allHeader = document.createElement("div");
+  allHeader.className = "collapsible-header";
+  allHeader.innerHTML =
+    '<span class="chevron collapsed">&#9660;</span>' +
+    '<span class="section-title">All Abilities</span>' +
+    '<span class="section-count" id="all-abilities-count">' + ABILITIES.length + ' available</span>';
+  abilityCard.appendChild(allHeader);
+
+  var allBody = document.createElement("div");
+  allBody.className = "collapsible-body collapsed";
+  allBody.id = "all-abilities-body";
+
   var abilityList = document.createElement("div");
   abilityList.className = "ability-list";
   abilityList.id = "ability-list";
@@ -173,7 +226,7 @@ function buildSheetUI() {
     tag.id = "ability-" + ab.key;
     tag.innerHTML =
       '<input type="checkbox" class="ability-check" id="ab-check-' + ab.key + '" data-key="' + ab.key + '">' +
-      '<div>' +
+      '<div class="ability-text">' +
       '<div class="ability-name">' + ab.name + '</div>' +
       '<div class="ability-effect">' + ab.effect + '</div>' +
       '</div>';
@@ -186,12 +239,16 @@ function buildSheetUI() {
           if (idx > -1) state.abilities.splice(idx, 1);
         }
         updateAbilityDisplay();
+        renderMyAbilities();
         saveToStorage();
       };
     })(ab.key));
     abilityList.appendChild(tag);
   }
-  abilityCard.appendChild(abilityList);
+  allBody.appendChild(abilityList);
+  abilityCard.appendChild(allBody);
+
+  setupCollapsible(allHeader, allBody, true);
 
   // Ability count display
   var abCount = document.createElement("div");
@@ -200,22 +257,45 @@ function buildSheetUI() {
   abilityCard.appendChild(abCount);
   container.appendChild(abilityCard);
 
-  // --- Group Suites Reference ---
-  var groupCard = createCard("Group Suites (Reference)");
+  // --- Group Suites ---
+  var groupCard = createCard("Group Suites");
   groupCard.querySelector("h2").innerHTML = '<i class="ts-icon-character ts-icon-small"></i> Group Suites';
   var groupContent = document.createElement("div");
   groupContent.style.cssText = "font-size:0.85em;";
+  groupContent.id = "group-suites-content";
   for (var g = 0; g < GROUP_SUITES.length; g++) {
     var suite = GROUP_SUITES[g];
     var suiteDiv = document.createElement("div");
     suiteDiv.style.cssText = "margin-bottom:0.6em;";
     suiteDiv.innerHTML = '<strong>' + suite.name + '</strong> <span style="color:var(--ts-color-secondary);">(Unlocked at ' + suite.unlockDie + ')</span>';
-    var suiteList = document.createElement("ul");
-    suiteList.style.cssText = "margin:0.2em 0;padding-left:1.2em;";
+    var suiteList = document.createElement("div");
+    suiteList.className = "ability-list";
+    suiteList.style.cssText = "margin:0.3em 0;padding-left:0.2em;";
     for (var a = 0; a < suite.abilities.length; a++) {
-      var li = document.createElement("li");
-      li.innerHTML = '<strong>' + suite.abilities[a].name + ':</strong> <span style="color:var(--ts-color-secondary);">' + suite.abilities[a].effect + '</span>';
-      suiteList.appendChild(li);
+      var gsAb = suite.abilities[a];
+      var gsTag = document.createElement("div");
+      gsTag.className = "ability-tag";
+      gsTag.id = "gs-ability-" + gsAb.key;
+      gsTag.innerHTML =
+        '<input type="checkbox" class="ability-check" id="gs-check-' + gsAb.key + '" data-key="' + gsAb.key + '">' +
+        '<div class="ability-text">' +
+        '<div class="ability-name">' + gsAb.name + '</div>' +
+        '<div class="ability-effect">' + gsAb.effect + '</div>' +
+        '</div>';
+      gsTag.querySelector(".ability-check").addEventListener("change", (function(key) {
+        return function(e) {
+          if (e.target.checked) {
+            if (state.groupSuiteAbilities.indexOf(key) === -1) state.groupSuiteAbilities.push(key);
+          } else {
+            var idx = state.groupSuiteAbilities.indexOf(key);
+            if (idx > -1) state.groupSuiteAbilities.splice(idx, 1);
+          }
+          updateGroupSuiteDisplay();
+          renderMyAbilities();
+          saveToStorage();
+        };
+      })(gsAb.key));
+      suiteList.appendChild(gsTag);
     }
     suiteDiv.appendChild(suiteList);
     groupContent.appendChild(suiteDiv);
@@ -281,6 +361,18 @@ function buildSheetUI() {
   document.getElementById("btn-save").addEventListener("click", function() {
     saveToStorage();
     showSaveIndicator();
+  });
+
+  // Custom ability add button
+  document.getElementById("custom-ability-add").addEventListener("click", function() {
+    addCustomAbility();
+  });
+  // Allow Enter key to add custom ability from name or effect fields
+  document.getElementById("custom-ability-name").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") addCustomAbility();
+  });
+  document.getElementById("custom-ability-effect").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") addCustomAbility();
   });
 }
 
@@ -370,10 +462,205 @@ function updateAbilityDisplay() {
       }
     }
   }
+  var totalOwned = state.abilities.length + state.customAbilities.length + state.groupSuiteAbilities.length;
   var countEl = document.getElementById("ability-count");
   if (countEl) {
-    countEl.textContent = state.abilities.length + " abilities owned";
+    countEl.textContent = totalOwned + " abilities owned";
   }
+}
+
+function updateGroupSuiteDisplay() {
+  for (var g = 0; g < GROUP_SUITES.length; g++) {
+    var suite = GROUP_SUITES[g];
+    for (var a = 0; a < suite.abilities.length; a++) {
+      var gsKey = suite.abilities[a].key;
+      var checkbox = document.getElementById("gs-check-" + gsKey);
+      var tag = document.getElementById("gs-ability-" + gsKey);
+      if (checkbox && tag) {
+        var owned = state.groupSuiteAbilities.indexOf(gsKey) > -1;
+        checkbox.checked = owned;
+        if (owned) {
+          tag.classList.add("owned");
+        } else {
+          tag.classList.remove("owned");
+        }
+      }
+    }
+  }
+}
+
+// Build a lookup map from group suite ability key to { name, effect, suiteName }
+function getGroupSuiteAbilityMap() {
+  var map = {};
+  for (var g = 0; g < GROUP_SUITES.length; g++) {
+    var suite = GROUP_SUITES[g];
+    for (var a = 0; a < suite.abilities.length; a++) {
+      var ab = suite.abilities[a];
+      map[ab.key] = { name: ab.name, effect: ab.effect, suiteName: suite.name };
+    }
+  }
+  return map;
+}
+
+function renderMyAbilities() {
+  var list = document.getElementById("my-abilities-list");
+  if (!list) return;
+  list.innerHTML = "";
+
+  var totalCount = 0;
+
+  // 1. Owned built-in abilities
+  for (var i = 0; i < state.abilities.length; i++) {
+    var key = state.abilities[i];
+    var abData = null;
+    for (var j = 0; j < ABILITIES.length; j++) {
+      if (ABILITIES[j].key === key) { abData = ABILITIES[j]; break; }
+    }
+    if (!abData) continue;
+    var tag = document.createElement("div");
+    tag.className = "ability-tag owned";
+    tag.innerHTML =
+      '<div class="ability-text">' +
+      '<div class="ability-name">' + abData.name + '</div>' +
+      '<div class="ability-effect">' + abData.effect + '</div>' +
+      '</div>' +
+      '<button class="ability-remove-btn" data-key="' + key + '" title="Remove ability">&times;</button>';
+    tag.querySelector(".ability-remove-btn").addEventListener("click", (function(k) {
+      return function() {
+        var idx = state.abilities.indexOf(k);
+        if (idx > -1) state.abilities.splice(idx, 1);
+        updateAbilityDisplay();
+        renderMyAbilities();
+        saveToStorage();
+      };
+    })(key));
+    list.appendChild(tag);
+    totalCount++;
+  }
+
+  // 2. Owned group suite abilities
+  var gsMap = getGroupSuiteAbilityMap();
+  for (var i = 0; i < state.groupSuiteAbilities.length; i++) {
+    var gsKey = state.groupSuiteAbilities[i];
+    var gsData = gsMap[gsKey];
+    if (!gsData) continue;
+    var gsTag = document.createElement("div");
+    gsTag.className = "ability-tag owned group-suite";
+    gsTag.innerHTML =
+      '<div class="ability-text">' +
+      '<div class="ability-name">' + gsData.name + '<span class="suite-badge">' + gsData.suiteName + '</span></div>' +
+      '<div class="ability-effect">' + gsData.effect + '</div>' +
+      '</div>' +
+      '<button class="ability-remove-btn" data-gs-key="' + gsKey + '" title="Remove ability">&times;</button>';
+    gsTag.querySelector(".ability-remove-btn").addEventListener("click", (function(k) {
+      return function() {
+        var idx = state.groupSuiteAbilities.indexOf(k);
+        if (idx > -1) state.groupSuiteAbilities.splice(idx, 1);
+        updateGroupSuiteDisplay();
+        renderMyAbilities();
+        saveToStorage();
+      };
+    })(gsKey));
+    list.appendChild(gsTag);
+    totalCount++;
+  }
+
+  // 3. Custom abilities
+  for (var i = 0; i < state.customAbilities.length; i++) {
+    var custom = state.customAbilities[i];
+    var cTag = document.createElement("div");
+    cTag.className = "ability-tag owned custom";
+    cTag.innerHTML =
+      '<div class="ability-text">' +
+      '<div class="ability-name">' + escapeHtml(custom.name) + '<span class="custom-badge">Custom</span></div>' +
+      '<div class="ability-effect">' + escapeHtml(custom.effect) + '</div>' +
+      '</div>' +
+      '<button class="ability-remove-btn" data-custom-key="' + custom.key + '" title="Delete custom ability">&times;</button>';
+    cTag.querySelector(".ability-remove-btn").addEventListener("click", (function(k) {
+      return function() {
+        removeCustomAbility(k);
+      };
+    })(custom.key));
+    list.appendChild(cTag);
+    totalCount++;
+  }
+
+  // Empty state message
+  if (totalCount === 0) {
+    var emptyMsg = document.createElement("div");
+    emptyMsg.className = "my-abilities-empty";
+    emptyMsg.textContent = "No abilities chosen yet. Check abilities below or add custom ones.";
+    list.appendChild(emptyMsg);
+  }
+
+  // Update count in header
+  var countEl = document.getElementById("my-abilities-count");
+  if (countEl) {
+    countEl.textContent = totalCount > 0 ? totalCount + " chosen" : "";
+  }
+
+  // Update total owned count
+  updateAbilityDisplay();
+}
+
+function addCustomAbility() {
+  var nameEl = document.getElementById("custom-ability-name");
+  var effectEl = document.getElementById("custom-ability-effect");
+  var name = nameEl ? nameEl.value.trim() : "";
+  var effect = effectEl ? effectEl.value.trim() : "";
+  if (!name) return; // require at least a name
+
+  var custom = {
+    key: "custom_" + Date.now(),
+    name: name,
+    effect: effect
+  };
+  state.customAbilities.push(custom);
+
+  // Clear form
+  if (nameEl) nameEl.value = "";
+  if (effectEl) effectEl.value = "";
+
+  renderMyAbilities();
+  saveToStorage();
+}
+
+function removeCustomAbility(key) {
+  for (var i = 0; i < state.customAbilities.length; i++) {
+    if (state.customAbilities[i].key === key) {
+      state.customAbilities.splice(i, 1);
+      break;
+    }
+  }
+  renderMyAbilities();
+  saveToStorage();
+}
+
+function setupCollapsible(header, body, startCollapsed) {
+  var chevron = header.querySelector(".chevron");
+  if (startCollapsed) {
+    body.classList.add("collapsed");
+    if (chevron) chevron.classList.add("collapsed");
+  } else {
+    body.classList.remove("collapsed");
+    if (chevron) chevron.classList.remove("collapsed");
+  }
+  header.addEventListener("click", function() {
+    var isCollapsed = body.classList.contains("collapsed");
+    if (isCollapsed) {
+      body.classList.remove("collapsed");
+      if (chevron) chevron.classList.remove("collapsed");
+    } else {
+      body.classList.add("collapsed");
+      if (chevron) chevron.classList.add("collapsed");
+    }
+  });
+}
+
+function escapeHtml(text) {
+  var div = document.createElement("div");
+  div.appendChild(document.createTextNode(text));
+  return div.innerHTML;
 }
 
 function createCard(title) {
@@ -424,6 +711,8 @@ function loadFromStorage() {
         state.turboTokens = (typeof loaded.turboTokens === "number") ? loaded.turboTokens : def.turboTokens;
         state.injuryLevel = (typeof loaded.injuryLevel === "number") ? loaded.injuryLevel : def.injuryLevel;
         state.abilities = Array.isArray(loaded.abilities) ? loaded.abilities : def.abilities;
+        state.customAbilities = Array.isArray(loaded.customAbilities) ? loaded.customAbilities : def.customAbilities;
+        state.groupSuiteAbilities = Array.isArray(loaded.groupSuiteAbilities) ? loaded.groupSuiteAbilities : def.groupSuiteAbilities;
         state.autoBlowUp = (typeof loaded.autoBlowUp === "boolean") ? loaded.autoBlowUp : def.autoBlowUp;
 
         // Load skills
@@ -463,6 +752,8 @@ function loadFromStorage() {
     updateTurboDisplay();
     updateInjuryDisplay();
     updateAbilityDisplay();
+    updateGroupSuiteDisplay();
+    renderMyAbilities();
 
     TS.debug.log("Character sheet loaded");
   }).catch(function(err) {

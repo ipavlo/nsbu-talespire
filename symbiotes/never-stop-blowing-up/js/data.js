@@ -103,81 +103,81 @@ export var GROUP_SUITES = [
     name: "La Familia",
     unlockDie: "d6",
     abilities: [
-      { name: "Tough", effect: "Once per episode: Roll Tough on someone else's behalf." },
-      { name: "Tokens", effect: "Spend tokens for other people at a 1:1 exchange rate." },
-      { name: "Skill Die", effect: "Once per episode: Lend a teammate a skill die." }
+      { key: "gs_la_familia_tough", name: "Tough", effect: "Once per episode: Roll Tough on someone else's behalf." },
+      { key: "gs_la_familia_tokens", name: "Tokens", effect: "Spend tokens for other people at a 1:1 exchange rate." },
+      { key: "gs_la_familia_skill_die", name: "Skill Die", effect: "Once per episode: Lend a teammate a skill die." }
     ]
   },
   {
     name: "Criminal Conspiracy",
     unlockDie: "d6",
     abilities: [
-      { name: "Item", effect: "When in a new location, produce a single useful item." },
-      { name: "Tech", effect: "Once per episode: Add your Tech Die to a Sneak Die." },
-      { name: "Hot", effect: "Roll Hot in response to the first attack of an encounter to dissuade an opponent." }
+      { key: "gs_criminal_conspiracy_item", name: "Item", effect: "When in a new location, produce a single useful item." },
+      { key: "gs_criminal_conspiracy_tech", name: "Tech", effect: "Once per episode: Add your Tech Die to a Sneak Die." },
+      { key: "gs_criminal_conspiracy_hot", name: "Hot", effect: "Roll Hot in response to the first attack of an encounter to dissuade an opponent." }
     ]
   },
   {
     name: "Diesel Circus",
     unlockDie: "d8",
     abilities: [
-      { name: "Injury Advantage", effect: "Roll twice on the first roll after an injury." },
-      { name: "Double Explosion", effect: "Doubles your amount of tokens." },
-      { name: "Drive Check", effect: "On a successful Drive Check, make another skill check." }
+      { key: "gs_diesel_circus_injury_advantage", name: "Injury Advantage", effect: "Roll twice on the first roll after an injury." },
+      { key: "gs_diesel_circus_double_explosion", name: "Double Explosion", effect: "Doubles your amount of tokens." },
+      { key: "gs_diesel_circus_drive_check", name: "Drive Check", effect: "On a successful Drive Check, make another skill check." }
     ]
   },
   {
     name: "The Continentals",
     unlockDie: "d8",
     abilities: [
-      { name: "Wits", effect: "Turbo Tokens for Wits help increase the die type." },
-      { name: "Hot Checks", effect: "Two successful Hot Checks auto-succeeds on stealing from an opponent." },
-      { name: "Melee", effect: "Lower the DC of Weapons Checks using melee weapons." }
+      { key: "gs_continentals_wits", name: "Wits", effect: "Turbo Tokens for Wits help increase the die type." },
+      { key: "gs_continentals_hot_checks", name: "Hot Checks", effect: "Two successful Hot Checks auto-succeeds on stealing from an opponent." },
+      { key: "gs_continentals_melee", name: "Melee", effect: "Lower the DC of Weapons Checks using melee weapons." }
     ]
   },
   {
     name: "Alpha Squad",
     unlockDie: "d10",
     abilities: [
-      { name: "Group Explosion", effect: "Min 3 people. In a scene where everyone uses a different skill, reduce the range to Blow Up by 1." },
-      { name: "Skill Add", effect: "Once per episode: Two people roll the same skill and add the totals together." },
-      { name: "Suit Up", effect: "Once per episode: The group may 'suit up' and each take 2 Turbo Tokens." }
+      { key: "gs_alpha_squad_group_explosion", name: "Group Explosion", effect: "Min 3 people. In a scene where everyone uses a different skill, reduce the range to Blow Up by 1." },
+      { key: "gs_alpha_squad_skill_add", name: "Skill Add", effect: "Once per episode: Two people roll the same skill and add the totals together." },
+      { key: "gs_alpha_squad_suit_up", name: "Suit Up", effect: "Once per episode: The group may 'suit up' and each take 2 Turbo Tokens." }
     ]
   },
   {
     name: "Marauders",
     unlockDie: "d10",
     abilities: [
-      { name: "+10", effect: "Beating an opponent by more than 10 means you defeat an additional opponent." },
-      { name: "Destroyer", effect: "Gain a Turbo Token on any turn where you destroy an object." },
-      { name: "Firestarter", effect: "Start a fire, short circuit electronics, or dissolve a structure as part of any action." }
+      { key: "gs_marauders_plus_10", name: "+10", effect: "Beating an opponent by more than 10 means you defeat an additional opponent." },
+      { key: "gs_marauders_destroyer", name: "Destroyer", effect: "Gain a Turbo Token on any turn where you destroy an object." },
+      { key: "gs_marauders_firestarter", name: "Firestarter", effect: "Start a fire, short circuit electronics, or dissolve a structure as part of any action." }
     ]
   },
   {
     name: "The Ones",
     unlockDie: "d12",
     abilities: [
-      { name: "Max Roll", effect: "Once per episode: Treat a Nat 1 as a max die roll." },
-      { name: "Reroll", effect: "Once per episode: Reroll a failure with a different skill." },
-      { name: "Turbo Tokens", effect: "Once per episode: Accept a Nat 1 to gain half the Turbo Tokens of the die value." }
+      { key: "gs_the_ones_max_roll", name: "Max Roll", effect: "Once per episode: Treat a Nat 1 as a max die roll." },
+      { key: "gs_the_ones_reroll", name: "Reroll", effect: "Once per episode: Reroll a failure with a different skill." },
+      { key: "gs_the_ones_turbo_tokens", name: "Turbo Tokens", effect: "Once per episode: Accept a Nat 1 to gain half the Turbo Tokens of the die value." }
     ]
   },
   {
     name: "Tactical Command",
     unlockDie: "d12",
     abilities: [
-      { name: "Shared Tokens", effect: "Once per episode: Spend Turbo Tokens across scenes." },
-      { name: "Reroll", effect: "Once per episode: Reroll on a failure." },
-      { name: "Token Gain", effect: "Characters gain a Turbo Token at the end of a scene where they have zero." }
+      { key: "gs_tactical_command_shared_tokens", name: "Shared Tokens", effect: "Once per episode: Spend Turbo Tokens across scenes." },
+      { key: "gs_tactical_command_reroll", name: "Reroll", effect: "Once per episode: Reroll on a failure." },
+      { key: "gs_tactical_command_token_gain", name: "Token Gain", effect: "Characters gain a Turbo Token at the end of a scene where they have zero." }
     ]
   },
   {
     name: "Bustin' Makes Me Feel Good",
     unlockDie: "d20",
     abilities: [
-      { name: "Track Restart", effect: "On a Nat 20: Restart that skill track, now rolling a second die and taking the better result." },
-      { name: "Group Explosion", effect: "On a Nat 20: Everybody else at the table graduates all of their lowest die type up by one." },
-      { name: "GM", effect: "On a Nat 20: Become the GM for 60 seconds." }
+      { key: "gs_bustin_track_restart", name: "Track Restart", effect: "On a Nat 20: Restart that skill track, now rolling a second die and taking the better result." },
+      { key: "gs_bustin_group_explosion", name: "Group Explosion", effect: "On a Nat 20: Everybody else at the table graduates all of their lowest die type up by one." },
+      { key: "gs_bustin_gm", name: "GM", effect: "On a Nat 20: Become the GM for 60 seconds." }
     ]
   }
 ];
