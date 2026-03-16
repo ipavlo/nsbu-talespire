@@ -1,0 +1,27 @@
+{
+  "manifestVersion": 1,
+  "name": "Never Stop Blowing Up Companion",
+  "summary": "Interactive rules companion for Never Stop Blowing Up in TaleSpire. Character sheet, Blow-Up dice roller, and searchable rules reference.",
+  "descriptionFilePath": "/readme.md",
+  "entryPoint": "/index.html",
+  "version": "1.0.0",
+  "about": {
+    "authors": ["Generated from NSBU rulebook"]
+  },
+  "api": {
+    "version": "0.1",
+    "initTimeout": 10,
+    "subscriptions": {
+      "symbiote": {
+        "onStateChangeEvent": "onStateChangeEvent"
+      },
+      "dice": {
+        "onRollResults": "handleRollResult"
+      }
+    }
+  },
+  "environment": {
+    "webViewBackgroundColor": "#1a1a2e",
+    "extras": ["colorStyles", "fonts", "icons"]
+  }
+}

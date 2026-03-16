@@ -1,0 +1,584 @@
+/* ============================================================
+   Never Stop Blowing Up - TaleSpire Symbiote Styles
+   Uses TaleSpire CSS variables exclusively
+   ============================================================ */
+
+/* --- Base --- */
+body {
+  background-color: var(--ts-background-primary);
+  color: var(--ts-color-primary);
+  font-family: 'OptimusPrinceps', sans-serif;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+button, input, select {
+  background-color: var(--ts-background-secondary);
+  color: var(--ts-color-primary);
+  font-family: 'OptimusPrinceps', sans-serif;
+  border: 1px solid var(--ts-accessibility-border);
+  border-radius: 4px;
+  font-size: 1.1em;
+  transition: ease-in-out 0.1s;
+}
+
+button:hover, input:hover {
+  background-color: var(--ts-background-primary);
+  transition: ease-in-out 0.2s;
+}
+
+button:focus-visible, input:focus-visible {
+  outline: 3px solid var(--ts-accessibility-focus);
+  outline-offset: -1px;
+}
+
+button {
+  background-color: var(--ts-button-background);
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--ts-button-hover);
+}
+
+textarea {
+  flex-grow: 1;
+  min-height: 5em;
+  background-color: var(--ts-background-secondary);
+  color: var(--ts-color-primary);
+  font-family: 'OptimusPrinceps', sans-serif;
+  border: 1px solid var(--ts-accessibility-border);
+  border-radius: 4px;
+  transition: ease-in-out 0.1s;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--ts-background-primary); }
+::-webkit-scrollbar-thumb { background: var(--ts-background-secondary); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ts-color-secondary); }
+
+input[type=number]::-webkit-inner-spin-button { color-scheme: dark; }
+
+/* --- Tab Navigation --- */
+.tab-bar {
+  display: flex;
+  gap: 2px;
+  border-bottom: 2px solid var(--ts-accent-primary);
+  margin-bottom: 1em;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--ts-background-primary);
+  padding: 4px 0;
+}
+
+.tab {
+  flex: 1;
+  padding: 0.5em;
+  text-align: center;
+  cursor: pointer;
+  background-color: var(--ts-background-secondary);
+  border: 1px solid var(--ts-accessibility-border);
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  color: var(--ts-color-secondary);
+  font-family: 'OptimusPrinceps', sans-serif;
+  font-size: 1em;
+  transition: all 0.15s ease-in-out;
+}
+
+.tab:hover {
+  background-color: var(--ts-button-hover);
+  color: var(--ts-color-primary);
+}
+
+.tab.active {
+  background-color: var(--ts-accent-primary);
+  color: var(--ts-color-primary);
+  font-weight: bold;
+}
+
+.tab:focus-visible {
+  outline: 3px solid var(--ts-accessibility-focus);
+  outline-offset: -1px;
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* --- Cards --- */
+.card {
+  background-color: var(--ts-background-secondary);
+  border: 1px solid var(--ts-accessibility-border);
+  border-radius: 4px;
+  padding: 0.8em;
+  margin-bottom: 0.8em;
+}
+
+.card h2 {
+  margin: 0 0 0.5em 0;
+  font-size: 1.2em;
+  color: var(--ts-accent-primary);
+}
+
+.card h3 {
+  margin: 0.6em 0 0.3em 0;
+  font-size: 1em;
+  color: var(--ts-color-primary);
+}
+
+/* --- Skill Boxes (die type display) --- */
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5em;
+}
+
+.skill-box {
+  text-align: center;
+  padding: 0.5em 0.3em;
+  background-color: var(--ts-background-tertiary);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  border: 1px solid transparent;
+}
+
+.skill-box:hover {
+  background-color: var(--ts-button-hover);
+  border-color: var(--ts-accent-primary);
+}
+
+.skill-box .skill-label {
+  font-size: 0.8em;
+  color: var(--ts-color-secondary);
+  margin-bottom: 0.2em;
+}
+
+.skill-box .skill-die {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: var(--ts-accent-primary);
+}
+
+.skill-box .skill-die.blown-up {
+  color: #ff6b35;
+  text-shadow: 0 0 8px rgba(255, 107, 53, 0.4);
+}
+
+/* --- Die Selector --- */
+.die-selector {
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+  margin-top: 0.3em;
+}
+
+.die-selector button {
+  font-size: 0.7em;
+  padding: 0.15em 0.3em;
+  min-width: 2em;
+  background-color: var(--ts-background-secondary);
+  border: 1px solid var(--ts-accessibility-border);
+  border-radius: 3px;
+  color: var(--ts-color-secondary);
+}
+
+.die-selector button:hover {
+  background-color: var(--ts-button-hover);
+  color: var(--ts-color-primary);
+}
+
+.die-selector button.selected {
+  background-color: var(--ts-accent-primary);
+  color: var(--ts-color-primary);
+  font-weight: bold;
+}
+
+/* --- Roll Buttons --- */
+.roll-btn {
+  background-color: var(--ts-button-background);
+  color: var(--ts-color-primary);
+  border: 1px solid var(--ts-accessibility-border);
+  border-radius: 4px;
+  padding: 0.4em 0.8em;
+  cursor: pointer;
+  font-family: 'OptimusPrinceps', sans-serif;
+  transition: all 0.15s ease-in-out;
+}
+
+.roll-btn:hover {
+  background-color: var(--ts-button-hover);
+}
+
+.roll-btn i { margin-right: 0.3em; }
+
+/* --- Injury Tracker --- */
+.injury-track {
+  display: flex;
+  gap: 0.5em;
+  margin-top: 0.3em;
+}
+
+.injury-level {
+  flex: 1;
+  text-align: center;
+  padding: 0.4em;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85em;
+  background-color: var(--ts-background-tertiary);
+  color: var(--ts-color-secondary);
+  border: 1px solid var(--ts-accessibility-border);
+  transition: all 0.15s ease-in-out;
+}
+
+.injury-level:hover {
+  background-color: var(--ts-button-hover);
+}
+
+.injury-level.active-injury {
+  font-weight: bold;
+}
+
+.injury-level.none.active-injury {
+  background-color: #2e5e2e;
+  color: var(--ts-color-primary);
+}
+
+.injury-level.superficial.active-injury {
+  background-color: #8b6914;
+  color: var(--ts-color-primary);
+}
+
+.injury-level.severe.active-injury {
+  background-color: #b44a00;
+  color: var(--ts-color-primary);
+}
+
+.injury-level.adrenalized.active-injury {
+  background-color: #8b0000;
+  color: var(--ts-color-primary);
+  text-shadow: 0 0 6px rgba(255, 100, 100, 0.5);
+}
+
+/* --- Turbo Tokens --- */
+.turbo-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.turbo-count {
+  font-size: 2em;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+  min-width: 1.5em;
+  text-align: center;
+}
+
+.turbo-controls {
+  display: flex;
+  gap: 0.3em;
+}
+
+.turbo-controls button {
+  width: 2em;
+  height: 2em;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+/* --- Abilities --- */
+.ability-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
+.ability-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.3em 0.5em;
+  border-radius: 4px;
+  background-color: var(--ts-background-tertiary);
+  color: var(--ts-color-secondary);
+  transition: all 0.15s ease-in-out;
+}
+
+.ability-tag .ability-check {
+  cursor: pointer;
+  width: 1.2em;
+  height: 1.2em;
+}
+
+.ability-tag.owned {
+  background-color: var(--ts-accent-background);
+  color: var(--ts-color-primary);
+}
+
+.ability-name {
+  font-weight: bold;
+  color: var(--ts-color-primary);
+  font-size: 0.9em;
+}
+
+.ability-effect {
+  font-size: 0.8em;
+  color: var(--ts-color-secondary);
+}
+
+/* --- Search --- */
+.search-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5em;
+  margin-bottom: 1em;
+}
+
+/* --- Rules Reference --- */
+.rules-card .rules-header {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.rules-card .rules-header:hover {
+  color: var(--ts-color-primary);
+}
+
+.rules-card .rules-header .collapse-icon {
+  transition: transform 0.15s;
+  font-size: 0.8em;
+}
+
+.rules-card .rules-header .collapse-icon.collapsed {
+  transform: rotate(-90deg);
+}
+
+.rules-body {
+  color: var(--ts-color-secondary);
+  font-size: 0.9em;
+  line-height: 1.5;
+  padding-top: 0.3em;
+}
+
+.rules-body strong {
+  color: var(--ts-color-primary);
+}
+
+.rules-body ul {
+  margin: 0.3em 0;
+  padding-left: 1.2em;
+}
+
+.rules-body li {
+  margin-bottom: 0.2em;
+}
+
+.rules-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5em 0;
+}
+
+.rules-body th, .rules-body td {
+  padding: 0.3em 0.5em;
+  border: 1px solid var(--ts-accessibility-border);
+  text-align: left;
+}
+
+.rules-body th {
+  background-color: var(--ts-background-tertiary);
+  color: var(--ts-accent-primary);
+}
+
+/* --- Conditions/Tags --- */
+.condition-tag {
+  display: inline-block;
+  padding: 0.2em 0.6em;
+  margin: 0.2em;
+  border-radius: 4px;
+  font-size: 0.85em;
+  background-color: var(--ts-background-tertiary);
+  color: var(--ts-color-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.condition-tag.active {
+  background-color: var(--ts-accent-primary);
+  color: var(--ts-color-primary);
+}
+
+/* --- Dice Roller --- */
+.blow-up-banner {
+  text-align: center;
+  padding: 0.8em;
+  margin: 0.5em 0;
+  background: linear-gradient(135deg, #ff6b35, #ff2200);
+  border-radius: 4px;
+  font-size: 1.3em;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  display: none;
+}
+
+.blow-up-banner.visible {
+  display: block;
+  animation: blowUpPulse 0.5s ease-in-out;
+}
+
+@keyframes blowUpPulse {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.roll-log {
+  max-height: 200px;
+  overflow-y: auto;
+  font-size: 0.85em;
+  color: var(--ts-color-secondary);
+}
+
+.roll-log-entry {
+  padding: 0.3em 0;
+  border-bottom: 1px solid var(--ts-accessibility-border);
+}
+
+.roll-log-entry .roll-result {
+  color: var(--ts-accent-primary);
+  font-weight: bold;
+}
+
+.roll-log-entry .blow-up-text {
+  color: #ff6b35;
+  font-weight: bold;
+}
+
+/* --- Inline form rows --- */
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 0.4em;
+}
+
+.form-row label {
+  color: var(--ts-color-secondary);
+  min-width: 5em;
+  text-align: right;
+  font-size: 0.9em;
+}
+
+.form-row input[type="text"],
+.form-row input[type="number"] {
+  flex: 1;
+}
+
+/* --- Save Bar --- */
+.save-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+  padding: 0.6em 0;
+  margin-bottom: 0.5em;
+}
+
+.save-btn {
+  padding: 0.5em 1.2em;
+  font-size: 1em;
+}
+
+.save-indicator {
+  font-size: 0.9em;
+  color: #4caf50;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.save-indicator.flash {
+  opacity: 1;
+  animation: saveFade 1.5s ease-in-out;
+}
+
+@keyframes saveFade {
+  0% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* --- Hidden utility --- */
+.hidden { display: none; }
+
+/* --- Toggle Switch --- */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 2.8em;
+  height: 1.5em;
+  min-width: 2.8em;
+  flex-shrink: 0;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--ts-background-tertiary);
+  border: 1px solid var(--ts-accessibility-border);
+  border-radius: 1em;
+  transition: all 0.2s ease-in-out;
+}
+
+.toggle-slider::before {
+  content: "";
+  position: absolute;
+  height: 1em;
+  width: 1em;
+  left: 0.2em;
+  bottom: 0.18em;
+  background-color: var(--ts-color-secondary);
+  border-radius: 50%;
+  transition: all 0.2s ease-in-out;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background-color: var(--ts-accent-primary);
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+  transform: translateX(1.3em);
+  background-color: var(--ts-color-primary);
+}
+
+.toggle-switch input:focus-visible + .toggle-slider {
+  outline: 3px solid var(--ts-accessibility-focus);
+  outline-offset: 2px;
+}
+
+/* --- Responsive adjustments --- */
+@media (max-width: 350px) {
+  .skill-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
