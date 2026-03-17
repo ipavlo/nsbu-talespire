@@ -213,6 +213,9 @@ function onRollResult(event) {
             // The player should then roll the new die and add results manually,
             // or use the skill check button again for the chain roll.
             if (skillKey) {
+              // Trigger flame effect on the skill box (persists 5 seconds)
+              CharacterSheet.triggerFlames(skillKey);
+
               var autoBlowUp = CharacterSheet.isAutoBlowUp();
               if (autoBlowUp) {
                 var newDie = CharacterSheet.upgradeSkill(skillKey);

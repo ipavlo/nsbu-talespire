@@ -257,9 +257,22 @@ function buildSheetUI() {
   abilityCard.appendChild(abCount);
   container.appendChild(abilityCard);
 
-  // --- Group Suites ---
+  // --- Group Suites (collapsible, collapsed by default) ---
   var groupCard = createCard("Group Suites");
-  groupCard.querySelector("h2").innerHTML = '<i class="ts-icon-character ts-icon-small"></i> Group Suites';
+  groupCard.querySelector("h2").style.display = "none";
+
+  var gsHeader = document.createElement("div");
+  gsHeader.className = "collapsible-header";
+  gsHeader.innerHTML =
+    '<span class="chevron collapsed">&#9660;</span>' +
+    '<span class="section-title">Group Suites</span>' +
+    '<span class="section-count">' + GROUP_SUITES.length + ' suites</span>';
+  groupCard.appendChild(gsHeader);
+
+  var gsBody = document.createElement("div");
+  gsBody.className = "collapsible-body collapsed";
+  gsBody.id = "group-suites-body";
+
   var groupContent = document.createElement("div");
   groupContent.style.cssText = "font-size:0.85em;";
   groupContent.id = "group-suites-content";
@@ -300,7 +313,9 @@ function buildSheetUI() {
     suiteDiv.appendChild(suiteList);
     groupContent.appendChild(suiteDiv);
   }
-  groupCard.appendChild(groupContent);
+  gsBody.appendChild(groupContent);
+  groupCard.appendChild(gsBody);
+  setupCollapsible(gsHeader, gsBody, true);
   container.appendChild(groupCard);
 
   // --- Notes ---
@@ -774,6 +789,37 @@ function upgradeSkill(skillKey) {
   return null;
 }
 
+// Active flame timers keyed by skillKey so overlapping blow-ups reset correctly
+var flameTimers = {};
+
+function triggerFlames(skillKey) {
+  var box = document.getElementById("skill-box-" + skillKey);
+  if (!box) return;
+
+  // Clear any existing timers for this skill (handles rapid re-triggers)
+  if (flameTimers[skillKey]) {
+    clearTimeout(flameTimers[skillKey].fade);
+    clearTimeout(flameTimers[skillKey].remove);
+  }
+
+  // Reset classes and force reflow to restart animation
+  box.classList.remove("on-fire", "fade-out");
+  void box.offsetWidth;
+  box.classList.add("on-fire");
+
+  flameTimers[skillKey] = {
+    // Begin fade-out at 4.5s
+    fade: setTimeout(function() {
+      box.classList.add("fade-out");
+    }, 4500),
+    // Fully remove at 5s
+    remove: setTimeout(function() {
+      box.classList.remove("on-fire", "fade-out");
+      delete flameTimers[skillKey];
+    }, 5000)
+  };
+}
+
 function getSkillDie(skillKey) {
   return state.skills[skillKey] || "d4";
 }
@@ -791,5 +837,6 @@ export var CharacterSheet = {
   upgradeSkill: upgradeSkill,
   getSkillDie: getSkillDie,
   getState: getState,
-  isAutoBlowUp: isAutoBlowUp
+  isAutoBlowUp: isAutoBlowUp,
+  triggerFlames: triggerFlames
 };
